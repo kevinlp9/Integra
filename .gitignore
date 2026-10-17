@@ -1,0 +1,32 @@
+# Entornos y secretos
+.env
+.env.*
+!.env.example
+backend/venv/
+backend/.venv/
+venv/
+.venv/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+.pytest_cache/
+
+# macOS
+.DS_Store
+
+# IDE
+.idea/**/workspace.xml
+.idea/**/usage.statistics.xml
+.idea/**/shelf/
+.idea/httpRequests/
+.idea/copilotDiffState.xml
+
+# Node / frontend (por si se crea en este mismo repo)
+node_modules/
+.next/
+dist/
+build/
+

@@ -1,26 +1,34 @@
 """
 Capa Models - Modelos de Base de Datos
-evaluation.py: Entidad SQLModel para Evaluaciones (Calificaciones granulares)
+evaluation.py: Tabla transaccional con cada respuesta/voto individual emitido desde los teléfonos
 """
 from sqlmodel import SQLModel, Field
 from typing import Optional
 
 
 class Evaluation(SQLModel, table=True):
-    """Modelo de base de datos para Evaluaciones por Criterio"""
+    """Modelo de base de datos para una respuesta individual emitida por un participante"""
 
     __tablename__ = "evaluations"
 
     id: Optional[int] = Field(default=None, primary_key=True)
-    presentation_id: int = Field(foreign_key="presentations.id")
-    rubric_id: int = Field(foreign_key="rubrics.id")
-    evaluator_id: str  # ID del alumno en Supabase que está evaluando
+    exposition_id: int = Field(foreign_key="expositions.id")
+    criteria_id: int = Field(foreign_key="rubric_criteria.id")
+    evaluator_name: str  # Nombre completo del alumno/participante
+    # Boleta del alumno evaluador (FK lógica -> alumnos.boleta). Vincula cada
+    # evaluación con la cuenta autenticada que la emitió.
+    evaluator_boleta: Optional[str] = Field(default=None, index=True)
 
-    # La calificación
-    score: float  # Puntuación otorgada (0 a max_score del criterio)
-    comment: Optional[str] = None  # Comentario opcional del evaluador
+    # Respuesta cruda dada por el participante: el número (rating), la opción
+    # elegida (multiple_choice), "true"/"false" (true_false) o el texto libre.
+    answer_value: Optional[str] = None
 
-    # Metadata
+    # Puntaje resultante (0..max_score). None para preguntas abiertas que no
+    # se autocalifican (open_text), simplemente se registra el texto.
+    score_given: Optional[float] = None
+
     created_at: str
-    updated_at: Optional[str] = None
+
+
+
 
